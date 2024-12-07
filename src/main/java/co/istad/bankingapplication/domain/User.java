@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -71,6 +72,8 @@ public class User {
 
     @Column(name = "city_or_province")
     private String cityOrProvince;
+
+    private LocalDate dateOfBirth;
 
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = false;
