@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -27,4 +29,8 @@ public class AccountType {
 
     @Column(name = "is_deleted")
     private Boolean isDeleted;
+
+    // Relationship
+    @OneToMany(mappedBy = "accountType")
+    private List<Account> accounts;
 }

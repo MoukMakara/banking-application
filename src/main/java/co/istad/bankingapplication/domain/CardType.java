@@ -5,6 +5,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @NoArgsConstructor
@@ -22,4 +24,7 @@ public class CardType {
     @Column(name = "is_delete", nullable = false)
     private Boolean isDelete = false;
 
+    // Relationship
+    @OneToMany(mappedBy = "cardType")
+    private List<Card> cards;
 }

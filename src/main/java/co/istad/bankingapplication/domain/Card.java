@@ -36,4 +36,10 @@ public class Card {
     @Column(name = "is_deleted", nullable = false)
     private Boolean isDeleted = false;
 
+    // Relationship
+    @OneToOne(mappedBy = "card")
+    private Account account;
+
+    @ManyToOne
+    private CardType cardType;
 }

@@ -40,4 +40,10 @@ public class Transaction {
     @Column(name = "is_deleted")
     private Boolean isDeleted;
 
+    // Relationship
+    @ManyToOne
+    private Account owner;
+
+    @ManyToOne
+    private Account receiver;
 }
