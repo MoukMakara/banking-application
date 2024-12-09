@@ -13,8 +13,7 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "accounts")
-public class Account {
-    @Id
+public class Account {    @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Integer id;
@@ -47,10 +46,11 @@ public class Account {
 
     @ManyToOne
     @JoinTable(name = "user_accounts",
-        joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
-        inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+            joinColumns = @JoinColumn(name = "account_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
     private User user;
 
     @OneToMany(mappedBy = "owner")
     private List<Transaction> transactions;
+
 }
