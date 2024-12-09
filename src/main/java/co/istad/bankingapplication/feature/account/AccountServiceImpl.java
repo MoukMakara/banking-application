@@ -7,6 +7,7 @@ import co.istad.bankingapplication.feature.account.dto.AccountCreateRequest;
 import co.istad.bankingapplication.feature.account.dto.AccountResponse;
 import co.istad.bankingapplication.feature.accountType.AccountTypeRepository;
 import co.istad.bankingapplication.feature.user.UserRepository;
+import co.istad.bankingapplication.mapper.AccountMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,7 @@ public class AccountServiceImpl implements AccountService{
     private final AccountTypeRepository accountTypeRepository;
     private final UserRepository userRepository;
     private final AccountRepository accountRepository;
+    private final AccountMapper accountMapper;
 
     @Override
     public AccountResponse createAccount(AccountCreateRequest accountCreateRequest) {
@@ -65,10 +67,10 @@ public class AccountServiceImpl implements AccountService{
 
         // Transfer DTO to domain model
 
-        Account account = new Account();
-        account.setAlias(accountCreateRequest.alias());
-        account.setActNo(accountCreateRequest.actNo());
-        account.setBalance(accountCreateRequest.balance());
+        Account account = accountMapper.fromAccountCreateRequest(accountCreateRequest);
+//        account.setAlias(accountCreateRequest.alias());
+//        account.setActNo(accountCreateRequest.actNo());
+//        account.setBalance(accountCreateRequest.balance());
         account.setAccountType(accountType);
         account.setUser(user);
 
@@ -81,14 +83,6 @@ public class AccountServiceImpl implements AccountService{
         accountRepository.save(account);
 
         // Transfer domain model to DTO
-        return AccountResponse.builder()
-                .alias(account.getAlias())
-                .actName(account.getActName())
-                .actNo(account.getActNo())
-                .balance(account.getBalance())
-                .isHidden(account.getIsHidden())
-                .accountTypeAlias(account.getAccountType().getName())
-                .userUuid(account.getUser().getUuid())
-                .build();
+        return accountMapper.toAccountResponse(account);
     }
 }
