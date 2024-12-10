@@ -12,4 +12,7 @@ public interface AccountTypeRepository extends JpaRepository<AccountType, Intege
      * @return {@link Optional}
      */
     Optional<AccountType> findByAlias(String alias);
+
+    // use to validate create Account Type
+    boolean existsByAlias(String alias);
 }

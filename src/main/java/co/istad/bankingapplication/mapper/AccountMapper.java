@@ -12,7 +12,6 @@ public interface AccountMapper {
     // source = Account
     // target = AccountResponse
     @Mapping(source = "accountType.alias", target = "accountTypeAlias")
-    @Mapping(source = "user.uuid", target = "userUuid")
     AccountResponse toAccountResponse(Account account);
 
     // map DTO to domain model

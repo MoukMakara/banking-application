@@ -11,7 +11,6 @@ public record AccountResponse(
         String actNo,
         BigDecimal balance,
         Boolean isHidden,
-        String accountTypeAlias,
-        String userUuid
+        String accountTypeAlias
 ) {
 }
