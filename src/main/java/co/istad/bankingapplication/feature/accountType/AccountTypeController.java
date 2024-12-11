@@ -4,6 +4,7 @@ import co.istad.bankingapplication.feature.account.dto.AccountCreateRequest;
 import co.istad.bankingapplication.feature.account.dto.AccountResponse;
 import co.istad.bankingapplication.feature.accountType.dto.AccountTypeCreateRequest;
 import co.istad.bankingapplication.feature.accountType.dto.AccountTypeResponse;
+import co.istad.bankingapplication.feature.accountType.dto.AccountTypeUpdateRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -26,5 +27,11 @@ public class AccountTypeController {
     @PostMapping
     public AccountTypeResponse createAccountType(@Valid @RequestBody AccountTypeCreateRequest accountTypeCreateRequest){
         return accountTypeService.createAccountType(accountTypeCreateRequest);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{alias}")
+    public AccountTypeResponse updateAccountTypeByAlias(@PathVariable String alias, @RequestBody AccountTypeUpdateRequest accountTypeUpdateRequest){
+        return accountTypeService.updateAccountTypeByAlias(alias, accountTypeUpdateRequest);
     }
 }
