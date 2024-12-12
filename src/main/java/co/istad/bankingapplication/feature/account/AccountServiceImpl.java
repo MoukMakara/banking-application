@@ -4,7 +4,9 @@ import co.istad.bankingapplication.domain.Account;
 import co.istad.bankingapplication.domain.AccountType;
 import co.istad.bankingapplication.domain.User;
 import co.istad.bankingapplication.feature.account.dto.AccountCreateRequest;
+import co.istad.bankingapplication.feature.account.dto.AccountRenameRequest;
 import co.istad.bankingapplication.feature.account.dto.AccountResponse;
+import co.istad.bankingapplication.feature.account.dto.AccountTransferLimitRequest;
 import co.istad.bankingapplication.feature.accountType.AccountTypeRepository;
 import co.istad.bankingapplication.feature.user.UserRepository;
 import co.istad.bankingapplication.mapper.AccountMapper;
@@ -107,5 +109,43 @@ public class AccountServiceImpl implements AccountService{
                 ));
 
         return accountMapper.toAccountResponse(account);
+    }
+
+    @Override
+    public AccountResponse renameAccountByActNo(String actNo, AccountRenameRequest accountRenameRequest) {
+        Account account = accountRepository.findByActNo(actNo)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        String.format("Account %s not found" ,actNo)
+                ));
+
+        account.setAlias(accountRenameRequest.alias());
+        accountRepository.save(account);
+
+        return accountMapper.toAccountResponse(account);
+    }
+
+    @Override
+    public void hideAccountByActNo(String actNo) {
+        Account account = accountRepository.findByActNo(actNo)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        String.format("Account %s not found" ,actNo)
+                ));
+
+        account.setIsHidden(true);
+        accountRepository.save(account);
+    }
+
+    @Override
+    public void updateTransferLimitByActNo(String actNo, AccountTransferLimitRequest accountTransferLimitRequest) {
+        Account account = accountRepository.findByActNo(actNo)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        String.format("Account %s not found" ,actNo)
+                ));
+
+        account.setTransferLimit(accountTransferLimitRequest.amount());
+        accountRepository.save(account);
     }
 }

@@ -1,7 +1,9 @@
 package co.istad.bankingapplication.feature.account;
 
 import co.istad.bankingapplication.feature.account.dto.AccountCreateRequest;
+import co.istad.bankingapplication.feature.account.dto.AccountRenameRequest;
 import co.istad.bankingapplication.feature.account.dto.AccountResponse;
+import co.istad.bankingapplication.feature.account.dto.AccountTransferLimitRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -32,5 +34,24 @@ public class AccountController {
     @GetMapping("/{actNo}")
     public AccountResponse findAccountByActNo(@PathVariable String actNo){
         return accountService.findAccountByActNo(actNo);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{actNo}/rename")
+    public AccountResponse renameAccountByActNo( @PathVariable String actNo,
+                                        @Valid @RequestBody AccountRenameRequest accountRenameRequest){
+        return accountService.renameAccountByActNo(actNo, accountRenameRequest);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PutMapping("/{actNo}/hideAccount")
+    public void hideAccountByActNo(@PathVariable String actNo){
+        accountService.hideAccountByActNo(actNo);
+    }
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{actNo}/transfer-limit")
+    public void updateTransferLimitByActNo(@PathVariable String actNo,
+                                           @Valid @RequestBody AccountTransferLimitRequest accountTransferLimitRequest){
+        accountService.updateTransferLimitByActNo(actNo, accountTransferLimitRequest);
     }
 }
