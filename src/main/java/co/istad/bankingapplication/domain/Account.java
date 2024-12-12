@@ -36,7 +36,10 @@ public class Account {    @Id
     @Column(name = "is_hidden")
     private Boolean isHidden;
 
-    // Relationship
+    @Column(name = "is_deleted")
+    private Boolean isDeleted; // soft delete
+
+// Relationship
 
     @ManyToOne
     private AccountType accountType;

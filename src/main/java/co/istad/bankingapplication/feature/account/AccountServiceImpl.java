@@ -3,14 +3,12 @@ package co.istad.bankingapplication.feature.account;
 import co.istad.bankingapplication.domain.Account;
 import co.istad.bankingapplication.domain.AccountType;
 import co.istad.bankingapplication.domain.User;
-import co.istad.bankingapplication.feature.account.dto.AccountCreateRequest;
-import co.istad.bankingapplication.feature.account.dto.AccountRenameRequest;
-import co.istad.bankingapplication.feature.account.dto.AccountResponse;
-import co.istad.bankingapplication.feature.account.dto.AccountTransferLimitRequest;
+import co.istad.bankingapplication.feature.account.dto.*;
 import co.istad.bankingapplication.feature.accountType.AccountTypeRepository;
 import co.istad.bankingapplication.feature.user.UserRepository;
 import co.istad.bankingapplication.mapper.AccountMapper;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -22,6 +20,7 @@ import java.math.BigDecimal;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class AccountServiceImpl implements AccountService{
 
     private final AccountTypeRepository accountTypeRepository;
@@ -81,6 +80,7 @@ public class AccountServiceImpl implements AccountService{
 
         // Auto generate data
         account.setIsHidden(false);
+        account.setIsDeleted(false);
         account.setActName(user.getName());
         account.setTransferLimit(BigDecimal.valueOf(1000));
 
@@ -148,4 +148,47 @@ public class AccountServiceImpl implements AccountService{
         account.setTransferLimit(accountTransferLimitRequest.amount());
         accountRepository.save(account);
     }
+
+    @Override
+    public AccountResponse updateStatusAccount(String alias, AccountUpdateStatusRequest accountUpdateStatusRequest) {
+        Account account = accountRepository.findByAlias(alias)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        String.format("Account %s not found" ,alias)
+                ));
+
+        account.setIsDeleted(accountUpdateStatusRequest.isDeleted());
+        accountRepository.save(account);
+
+        return accountMapper.toAccountResponse(account);
+    }
+
+    @Override
+    public void deleteAccountByActNo(String actNo) {
+        Account account = accountRepository.findByActNo(actNo)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        String.format("Account %s not found" ,actNo)
+                ));
+
+        accountRepository.delete(account);
+    }
+
+    @Override
+    public AccountResponse updateAccountByActNo(String actNo, AccountUpdateRequest accountUpdateRequest) {
+        Account account = accountRepository.findByActNo(actNo)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        String.format("Account %s not found" ,actNo)
+                ));
+
+        log.info("Before map: {}, {}, {}", account.getAlias(), account.getActName(), account.getActNo());
+        accountMapper.fromAccountUpdateRequest(accountUpdateRequest, account);
+        log.info("After map: {}, {}, {}", account.getAlias(), account.getActName(), account.getActNo());
+
+        accountRepository.save(account);
+
+        return accountMapper.toAccountResponse(account);
+    }
+
 }

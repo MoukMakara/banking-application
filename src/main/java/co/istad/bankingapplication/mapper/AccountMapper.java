@@ -3,8 +3,8 @@ package co.istad.bankingapplication.mapper;
 import co.istad.bankingapplication.domain.Account;
 import co.istad.bankingapplication.feature.account.dto.AccountCreateRequest;
 import co.istad.bankingapplication.feature.account.dto.AccountResponse;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import co.istad.bankingapplication.feature.account.dto.AccountUpdateRequest;
+import org.mapstruct.*;
 
 @Mapper(componentModel = "spring")
 public interface AccountMapper {
@@ -18,4 +18,11 @@ public interface AccountMapper {
     // source = AccountCreateRequest
     // target = Account
     Account fromAccountCreateRequest(AccountCreateRequest accountCreateRequest);
+
+    Account fromAccountUpdateRequest(AccountUpdateRequest accountUpdateRequest);
+
+    // partial update
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    void fromAccountUpdateRequest(AccountUpdateRequest accountUpdateRequest,
+                                  @MappingTarget Account account);
 }

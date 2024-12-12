@@ -1,9 +1,6 @@
 package co.istad.bankingapplication.feature.account;
 
-import co.istad.bankingapplication.feature.account.dto.AccountCreateRequest;
-import co.istad.bankingapplication.feature.account.dto.AccountRenameRequest;
-import co.istad.bankingapplication.feature.account.dto.AccountResponse;
-import co.istad.bankingapplication.feature.account.dto.AccountTransferLimitRequest;
+import co.istad.bankingapplication.feature.account.dto.*;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -53,5 +50,25 @@ public class AccountController {
     public void updateTransferLimitByActNo(@PathVariable String actNo,
                                            @Valid @RequestBody AccountTransferLimitRequest accountTransferLimitRequest){
         accountService.updateTransferLimitByActNo(actNo, accountTransferLimitRequest);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PatchMapping("/{alias}/is-deleted")
+    public AccountResponse updateStatusAccount(@PathVariable String alias,
+                                               @Valid @RequestBody AccountUpdateStatusRequest accountUpdateStatusRequest){
+        return accountService.updateStatusAccount(alias, accountUpdateStatusRequest);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{actNo}")
+    public void deleteAccountByActNo(@PathVariable String actNo){
+        accountService.deleteAccountByActNo(actNo);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @PutMapping("/{actNo}")
+    public AccountResponse updateAccountByActNo(@PathVariable String actNo,
+                                                @Valid @RequestBody AccountUpdateRequest accountUpdateRequest){
+        return accountService.updateAccountByActNo(actNo, accountUpdateRequest);
     }
 }

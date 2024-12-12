@@ -1,9 +1,6 @@
 package co.istad.bankingapplication.feature.account;
 
-import co.istad.bankingapplication.feature.account.dto.AccountCreateRequest;
-import co.istad.bankingapplication.feature.account.dto.AccountRenameRequest;
-import co.istad.bankingapplication.feature.account.dto.AccountResponse;
-import co.istad.bankingapplication.feature.account.dto.AccountTransferLimitRequest;
+import co.istad.bankingapplication.feature.account.dto.*;
 import org.springframework.data.domain.Page;
 
 public interface AccountService {
@@ -49,4 +46,26 @@ public interface AccountService {
      * @param accountTransferLimitRequest
      */
     void updateTransferLimitByActNo(String actNo, AccountTransferLimitRequest accountTransferLimitRequest);
+
+    /**
+     * update Status Account Soft delete
+     * @param alias
+     * @param accountUpdateStatusRequest
+     * @return {@link AccountResponse}
+     */
+    AccountResponse updateStatusAccount(String alias, AccountUpdateStatusRequest accountUpdateStatusRequest);
+
+    /**
+     * delete Account By Account Number Hard delete
+     * @param actNo
+     */
+    void deleteAccountByActNo(String actNo);
+
+    /**
+     * update Account By Account Number
+     * @param actNo
+     * @param accountUpdateRequest
+     * @return {@link AccountResponse}
+     */
+    AccountResponse updateAccountByActNo(String actNo, AccountUpdateRequest accountUpdateRequest);
 }
