@@ -1,5 +1,6 @@
 package co.istad.bankingapplication.feature.account.dto;
 
+import co.istad.bankingapplication.feature.accountType.dto.AccountTypeResponse;
 import lombok.Builder;
 
 import java.math.BigDecimal;
@@ -11,6 +12,6 @@ public record AccountResponse(
         String actNo,
         BigDecimal balance,
         Boolean isHidden,
-        String accountTypeAlias
+        AccountTypeResponse accountType
 ) {
 }

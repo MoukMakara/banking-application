@@ -9,6 +9,9 @@ import co.istad.bankingapplication.feature.accountType.AccountTypeRepository;
 import co.istad.bankingapplication.feature.user.UserRepository;
 import co.istad.bankingapplication.mapper.AccountMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -83,6 +86,26 @@ public class AccountServiceImpl implements AccountService{
         accountRepository.save(account);
 
         // Transfer domain model to DTO
+        return accountMapper.toAccountResponse(account);
+    }
+
+    @Override
+    public Page<AccountResponse> findAllAccounts(int pageNumber, int pageSize) {
+        Sort sortById = Sort.by(Sort.Direction.DESC, "id");
+        PageRequest pageRequest = PageRequest.of(pageNumber, pageSize, sortById);
+
+        Page<Account> accounts = accountRepository.findAll(pageRequest);
+
+        return accounts.map(accountMapper::toAccountResponse);
+    }
+
+    @Override
+    public AccountResponse findAccountByActNo(String actNo) {
+        Account account = accountRepository.findByActNo(actNo)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, String.format("Account %s not found" ,actNo)
+                ));
+
         return accountMapper.toAccountResponse(account);
     }
 }
