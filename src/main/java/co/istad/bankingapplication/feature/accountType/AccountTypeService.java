@@ -28,4 +28,17 @@ public interface AccountTypeService {
      * @return {@link AccountTypeResponse}
      */
     AccountTypeResponse updateAccountTypeByAlias(String alias, AccountTypeUpdateRequest accountTypeUpdateRequest);
+
+    /**
+     * delete Account Type By Alias
+     * @param alias {@link String alias}
+     */
+    void deleteAccountTypeByAlias(String alias);
+
+    /**
+     * get Account Type By Alias
+     * @param alias {@link String}
+     * @return {@link AccountTypeResponse}
+     */
+    AccountTypeResponse getAccountTypeByAlias(String alias);
 }

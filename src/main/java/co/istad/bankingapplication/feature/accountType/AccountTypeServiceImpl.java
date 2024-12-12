@@ -71,4 +71,23 @@ public class AccountTypeServiceImpl implements AccountTypeService{
 
         return accountTypeMapper.toAccountTypeResponse(accountType);
     }
+
+    @Override
+    public void deleteAccountTypeByAlias(String alias) {
+        AccountType accountType = accountTypeRepository.findByAlias(alias)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, String.format("Account type %s not found", alias)
+                ));
+        accountTypeRepository.delete(accountType);
+    }
+
+    @Override
+    public AccountTypeResponse getAccountTypeByAlias(String alias) {
+        AccountType accountType = accountTypeRepository.findByAlias(alias)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, String.format("Account type %s not found", alias)
+                ));
+
+        return accountTypeMapper.toAccountTypeResponse(accountType);
+    }
 }

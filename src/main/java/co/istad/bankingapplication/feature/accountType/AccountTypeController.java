@@ -1,7 +1,6 @@
 package co.istad.bankingapplication.feature.accountType;
 
-import co.istad.bankingapplication.feature.account.dto.AccountCreateRequest;
-import co.istad.bankingapplication.feature.account.dto.AccountResponse;
+
 import co.istad.bankingapplication.feature.accountType.dto.AccountTypeCreateRequest;
 import co.istad.bankingapplication.feature.accountType.dto.AccountTypeResponse;
 import co.istad.bankingapplication.feature.accountType.dto.AccountTypeUpdateRequest;
@@ -33,5 +32,17 @@ public class AccountTypeController {
     @PatchMapping("/{alias}")
     public AccountTypeResponse updateAccountTypeByAlias(@PathVariable String alias, @RequestBody AccountTypeUpdateRequest accountTypeUpdateRequest){
         return accountTypeService.updateAccountTypeByAlias(alias, accountTypeUpdateRequest);
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @DeleteMapping("/{alias}")
+    public void deleteAccountTypeByAlias(@PathVariable String alias){
+        accountTypeService.deleteAccountTypeByAlias(alias);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/{alias}")
+    public AccountTypeResponse getAccountTypeByAlias(@PathVariable String alias){
+        return accountTypeService.getAccountTypeByAlias(alias);
     }
 }
