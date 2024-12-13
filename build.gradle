@@ -52,6 +52,12 @@ dependencies {
     // Lombok Mapstruct Binding
     annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
 
+    // Spring Security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+
+    // Spring HATEOAS
+    implementation 'org.springframework.boot:spring-boot-starter-hateoas'
+
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
