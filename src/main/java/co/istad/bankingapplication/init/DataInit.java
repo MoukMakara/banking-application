@@ -1,9 +1,11 @@
 package co.istad.bankingapplication.init;
 
 import co.istad.bankingapplication.domain.AccountType;
+import co.istad.bankingapplication.domain.Role;
 import co.istad.bankingapplication.domain.User;
 import co.istad.bankingapplication.feature.accountType.AccountTypeRepository;
 import co.istad.bankingapplication.feature.user.UserRepository;
+import co.istad.bankingapplication.feature.user.UserRoleRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -16,6 +18,7 @@ import java.util.UUID;
 public class DataInit {
 
     private final UserRepository userRepository;
+    private final UserRoleRepository userRoleRepository;
     private final AccountTypeRepository accountTypeRepository;
 
 
@@ -23,6 +26,17 @@ public class DataInit {
     void init() {
         // User
         if (userRepository.count() == 0) {
+            Role user = new Role();
+            user.setName("USER");
+
+            Role customer = new Role();
+            customer.setName("CUSTOMER");
+
+            Role admin = new Role();
+            admin.setName("ADMIN");
+
+            userRoleRepository.saveAll(List.of(user, customer, admin));
+
             User user1 = new User();
             user1.setUuid(UUID.randomUUID().toString());
             user1.setName("Mouk Makara");
@@ -34,6 +48,7 @@ public class DataInit {
             user1.setStudentCardId("000012345");
             user1.setIsBlocked(false);
             user1.setIsDeleted(false);
+            user1.setRoles(List.of(user));
 
             User user2 = new User();
             user2.setUuid(UUID.randomUUID().toString());
@@ -46,8 +61,22 @@ public class DataInit {
             user2.setStudentCardId("000012346");
             user2.setIsBlocked(false);
             user2.setIsDeleted(false);
+            user2.setRoles(List.of(user, customer));
 
-            userRepository.saveAll(List.of(user1, user2));
+            User user3 = new User();
+            user3.setUuid(UUID.randomUUID().toString());
+            user3.setName("Pich Nora");
+            user3.setPhoneNumber("0975495989");
+            user3.setPassword("Qwer123%#$");
+            user3.setPin("1239");
+            user3.setGender("Male");
+            user3.setNationalCardId("316312344");
+            user3.setStudentCardId("000012946");
+            user3.setIsBlocked(false);
+            user3.setIsDeleted(false);
+            user3.setRoles(List.of(user, customer, admin));
+
+            userRepository.saveAll(List.of(user1, user2, user3));
         }
         // Account Type
         if (accountTypeRepository.count() == 0){
