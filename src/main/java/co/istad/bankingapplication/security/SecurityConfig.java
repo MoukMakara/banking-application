@@ -1,6 +1,5 @@
 package co.istad.bankingapplication.security;
 
-//import co.istad.bankingapplication.security.PasswordEncoderConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
