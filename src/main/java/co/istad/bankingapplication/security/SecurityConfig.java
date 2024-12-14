@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -24,6 +25,7 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
 
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final UserDetailsService userDetailsService;
 
     // way 2 to do BCryptPasswordEncoder
 //    @Bean
@@ -64,25 +66,33 @@ public class SecurityConfig {
     }
 
     @Bean
-    public UserDetailsService userDetailsService(){
-        UserDetails user = User
-                .withUsername("user")
-                .password(bCryptPasswordEncoder.encode("user123"))
-//                .password(bCryptPasswordEncoder().encode("user123"))
-                .roles("USER")
-                .build();
-        UserDetails customer = User
-                .withUsername("customer")
-                .password(bCryptPasswordEncoder.encode("customer123"))
-//                .password(bCryptPasswordEncoder().encode("editor123"))
-                .roles("USER", "CUSTOMER")
-                .build();
-        UserDetails admin = User
-                .withUsername("admin")
-                .password(bCryptPasswordEncoder.encode("admin123"))
-//                .password(bCryptPasswordEncoder().encode("admin123"))
-                .roles("USER","CUSTOMER", "ADMIN")
-                .build();
-        return new InMemoryUserDetailsManager(user, customer, admin);
+    DaoAuthenticationProvider authenticationProvider(){
+        DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
+        authProvider.setUserDetailsService(userDetailsService);
+        authProvider.setPasswordEncoder(bCryptPasswordEncoder);
+        return authProvider;
     }
+
+//    @Bean
+//    public UserDetailsService userDetailsService(){
+//        UserDetails user = User
+//                .withUsername("user")
+//                .password(bCryptPasswordEncoder.encode("user123"))
+////                .password(bCryptPasswordEncoder().encode("user123"))
+//                .roles("USER")
+//                .build();
+//        UserDetails customer = User
+//                .withUsername("customer")
+//                .password(bCryptPasswordEncoder.encode("customer123"))
+////                .password(bCryptPasswordEncoder().encode("editor123"))
+//                .roles("USER", "CUSTOMER")
+//                .build();
+//        UserDetails admin = User
+//                .withUsername("admin")
+//                .password(bCryptPasswordEncoder.encode("admin123"))
+////                .password(bCryptPasswordEncoder().encode("admin123"))
+//                .roles("USER","CUSTOMER", "ADMIN")
+//                .build();
+//        return new InMemoryUserDetailsManager(user, customer, admin);
+//    }
 }

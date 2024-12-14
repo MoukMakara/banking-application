@@ -12,4 +12,6 @@ public interface UserRepository extends JpaRepository<User, Integer> {
      * @return {@link Optional}
      */
     Optional<User> findByUuid(String uuid);
+
+    Optional<User> findByPhoneNumberAndIsDeletedFalse(String phoneNumber);
 }

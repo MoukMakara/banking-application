@@ -8,6 +8,7 @@ import co.istad.bankingapplication.feature.user.UserRepository;
 import co.istad.bankingapplication.feature.user.UserRoleRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class DataInit {
     private final UserRepository userRepository;
     private final UserRoleRepository userRoleRepository;
     private final AccountTypeRepository accountTypeRepository;
+    private final PasswordEncoder passwordEncoder;
 
 
     @PostConstruct
@@ -41,7 +43,7 @@ public class DataInit {
             user1.setUuid(UUID.randomUUID().toString());
             user1.setName("Mouk Makara");
             user1.setPhoneNumber("0975495981");
-            user1.setPassword("Qwer123@#$");
+            user1.setPassword(passwordEncoder.encode("Qwer123@#$"));
             user1.setPin("1234");
             user1.setGender("Male");
             user1.setNationalCardId("312312343");
@@ -54,7 +56,7 @@ public class DataInit {
             user2.setUuid(UUID.randomUUID().toString());
             user2.setName("Chan Bopha");
             user2.setPhoneNumber("0975495983");
-            user2.setPassword("Qwer123%#$");
+            user2.setPassword(passwordEncoder.encode("Qwer123@#$"));
             user2.setPin("1235");
             user2.setGender("Female");
             user2.setNationalCardId("312312344");
@@ -67,7 +69,7 @@ public class DataInit {
             user3.setUuid(UUID.randomUUID().toString());
             user3.setName("Pich Nora");
             user3.setPhoneNumber("0975495989");
-            user3.setPassword("Qwer123%#$");
+            user3.setPassword(passwordEncoder.encode("Qwer123@#$"));
             user3.setPin("1239");
             user3.setGender("Male");
             user3.setNationalCardId("316312344");
