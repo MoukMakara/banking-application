@@ -34,10 +34,13 @@ public class DataInit {
             Role customer = new Role();
             customer.setName("CUSTOMER");
 
+            Role editor = new Role();
+            editor.setName("EDITOR");
+
             Role admin = new Role();
             admin.setName("ADMIN");
 
-            userRoleRepository.saveAll(List.of(user, customer, admin));
+            userRoleRepository.saveAll(List.of(user, customer, editor, admin));
 
             User user1 = new User();
             user1.setUuid(UUID.randomUUID().toString());
@@ -50,7 +53,7 @@ public class DataInit {
             user1.setStudentCardId("000012345");
             user1.setIsBlocked(false);
             user1.setIsDeleted(false);
-            user1.setRoles(List.of(user));
+            user1.setRoles(List.of(user, customer));
 
             User user2 = new User();
             user2.setUuid(UUID.randomUUID().toString());
@@ -76,9 +79,22 @@ public class DataInit {
             user3.setStudentCardId("000012946");
             user3.setIsBlocked(false);
             user3.setIsDeleted(false);
-            user3.setRoles(List.of(user, customer, admin));
+            user3.setRoles(List.of(user, customer, editor));
 
-            userRepository.saveAll(List.of(user1, user2, user3));
+            User user4 = new User();
+            user4.setUuid(UUID.randomUUID().toString());
+            user4.setName("Admin");
+            user4.setPhoneNumber("0973333666");
+            user4.setPassword(passwordEncoder.encode("Admin123@#$"));
+            user4.setPin("6666");
+            user4.setGender("Male");
+            user4.setNationalCardId("33336666");
+            user4.setStudentCardId("66667777");
+            user4.setIsBlocked(false);
+            user4.setIsDeleted(false);
+            user4.setRoles(List.of(user, customer, editor, admin));
+
+            userRepository.saveAll(List.of(user1, user2, user3, user4));
         }
         // Account Type
         if (accountTypeRepository.count() == 0){

@@ -49,9 +49,9 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE,"api/v1/accounts/**").hasRole("ADMIN")
 
                 .requestMatchers(HttpMethod.GET, "api/v1/account-types/**").hasAnyRole("USER")
-                .requestMatchers(HttpMethod.POST, "api/v1/account-types/**").hasAnyRole("CUSTOMER")
-                .requestMatchers(HttpMethod.PUT, "api/v1/account-types/**").hasAnyRole("CUSTOMER")
-                .requestMatchers(HttpMethod.PATCH, "api/v1/account-types/**").hasAnyRole("CUSTOMER")
+                .requestMatchers(HttpMethod.POST, "api/v1/account-types/**").hasAnyRole("EDITOR")
+                .requestMatchers(HttpMethod.PUT, "api/v1/account-types/**").hasAnyRole("EDITOR")
+                .requestMatchers(HttpMethod.PATCH, "api/v1/account-types/**").hasAnyRole("EDITOR")
                 .requestMatchers(HttpMethod.DELETE, "api/v1/account-types/**").hasRole("ADMIN")
                 .anyRequest().authenticated());
 
