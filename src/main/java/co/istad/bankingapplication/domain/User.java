@@ -29,6 +29,9 @@ public class User {
     @Column(name = "phone_number", nullable = false, unique = true, length = 10)
     private String phoneNumber;
 
+    @Column(name = "email", nullable = false, unique = true)
+    private String email;
+
     @Column( nullable = false)
     private String password;
 
@@ -78,6 +81,9 @@ public class User {
 
     @Column(name = "is_blocked", nullable = false)
     private Boolean isBlocked = false;
+
+    @Column(name = "is_verified", nullable = false)
+    private Boolean isVerified;
 
     // Relationship
     @OneToMany(mappedBy = "user")

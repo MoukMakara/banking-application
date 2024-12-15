@@ -42,6 +42,7 @@ public class SecurityConfig {
         // Endpoint Security config
         http.authorizeHttpRequests(endpoint -> endpoint
                         // Centralized Authorization
+                .requestMatchers("/api/v1/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET,"/api/v1/accounts/**").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.POST, "api/v1/accounts/**").hasAnyRole("USER")
                 .requestMatchers(HttpMethod.PUT,"api/v1/accounts/**").hasAnyRole("USER")

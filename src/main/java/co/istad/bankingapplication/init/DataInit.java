@@ -48,11 +48,13 @@ public class DataInit {
             user1.setPhoneNumber("0975495981");
             user1.setPassword(passwordEncoder.encode("Qwer123@#$"));
             user1.setPin("1234");
+            user1.setEmail("moukmakara@gmail.com");
             user1.setGender("Male");
             user1.setNationalCardId("312312343");
             user1.setStudentCardId("000012345");
             user1.setIsBlocked(false);
             user1.setIsDeleted(false);
+            user1.setIsVerified(false);
             user1.setRoles(List.of(user, customer));
 
             User user2 = new User();
@@ -61,11 +63,13 @@ public class DataInit {
             user2.setPhoneNumber("0975495983");
             user2.setPassword(passwordEncoder.encode("Qwer123@#$"));
             user2.setPin("1235");
+            user2.setEmail("chanbopha@gmail.com");
             user2.setGender("Female");
             user2.setNationalCardId("312312344");
             user2.setStudentCardId("000012346");
             user2.setIsBlocked(false);
             user2.setIsDeleted(false);
+            user2.setIsVerified(false);
             user2.setRoles(List.of(user, customer));
 
             User user3 = new User();
@@ -74,11 +78,13 @@ public class DataInit {
             user3.setPhoneNumber("0975495989");
             user3.setPassword(passwordEncoder.encode("Qwer123@#$"));
             user3.setPin("1239");
+            user3.setEmail("pichnora@gmail.com");
             user3.setGender("Male");
             user3.setNationalCardId("316312344");
             user3.setStudentCardId("000012946");
             user3.setIsBlocked(false);
             user3.setIsDeleted(false);
+            user3.setIsVerified(false);
             user3.setRoles(List.of(user, customer, editor));
 
             User user4 = new User();
@@ -87,11 +93,13 @@ public class DataInit {
             user4.setPhoneNumber("0973333666");
             user4.setPassword(passwordEncoder.encode("Admin123@#$"));
             user4.setPin("6666");
+            user4.setEmail("admin@gmail.com");
             user4.setGender("Male");
             user4.setNationalCardId("33336666");
             user4.setStudentCardId("66667777");
             user4.setIsBlocked(false);
             user4.setIsDeleted(false);
+            user4.setIsVerified(false);
             user4.setRoles(List.of(user, customer, editor, admin));
 
             userRepository.saveAll(List.of(user1, user2, user3, user4));
