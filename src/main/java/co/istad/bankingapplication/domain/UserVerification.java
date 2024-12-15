@@ -11,8 +11,8 @@ import java.time.LocalTime;
 @Setter
 @NoArgsConstructor
 @Entity
-@Table(name = "send-verifications")
-public class UserSendVerification {
+@Table(name = "user-verifications")
+public class UserVerification {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;

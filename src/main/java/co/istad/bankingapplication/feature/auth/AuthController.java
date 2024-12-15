@@ -3,6 +3,7 @@ package co.istad.bankingapplication.feature.auth;
 import co.istad.bankingapplication.feature.auth.dto.RegisterRequest;
 import co.istad.bankingapplication.feature.auth.dto.RegisterResponse;
 import co.istad.bankingapplication.feature.auth.dto.SendVerificationRequest;
+import co.istad.bankingapplication.feature.auth.dto.VerificationRequest;
 import jakarta.mail.MessagingException;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -25,5 +26,17 @@ public class AuthController {
     @PostMapping("/send-verification")
     void sendVerification(@Valid @RequestBody SendVerificationRequest sendVerificationRequest) throws MessagingException {
         authService.sendVerification(sendVerificationRequest.email());
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping("/resend-verification")
+    void resendVerification(@Valid @RequestBody SendVerificationRequest sendVerificationRequest) throws MessagingException {
+        authService.resendVerification(sendVerificationRequest.email());
+    }
+
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    @PostMapping("/verify")
+    public void verify(@Valid @RequestBody VerificationRequest verificationRequest){
+        authService.verify(verificationRequest);
     }
 }

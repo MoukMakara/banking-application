@@ -2,9 +2,11 @@ package co.istad.bankingapplication.feature.auth;
 
 import co.istad.bankingapplication.domain.Role;
 import co.istad.bankingapplication.domain.User;
-import co.istad.bankingapplication.domain.UserSendVerification;
+
+import co.istad.bankingapplication.domain.UserVerification;
 import co.istad.bankingapplication.feature.auth.dto.RegisterRequest;
 import co.istad.bankingapplication.feature.auth.dto.RegisterResponse;
+import co.istad.bankingapplication.feature.auth.dto.VerificationRequest;
 import co.istad.bankingapplication.feature.user.UserRepository;
 import co.istad.bankingapplication.feature.user.UserRoleRepository;
 import co.istad.bankingapplication.feature.user.UserVerificationRepository;
@@ -106,12 +108,12 @@ public class AuthServiceImpl implements AuthService{
                         HttpStatus.NOT_FOUND, String.format("User with email %s not found", email)
                 ));
 
-        UserSendVerification userSendVerification = new UserSendVerification();
-        userSendVerification.setUser(user);
-        userSendVerification.setExpirationTime(LocalTime.now().plusMinutes(1));
-        userSendVerification.setVerificationCode(RandomUtil.random6Digits());
+        UserVerification userVerification = new UserVerification();
+        userVerification.setUser(user);
+        userVerification.setExpirationTime(LocalTime.now().plusMinutes(1));
+        userVerification.setVerificationCode(RandomUtil.random6Digits());
 
-        userVerificationRepository.save(userSendVerification);
+        userVerificationRepository.save(userVerification);
 
         // prepare email sending
         MimeMessage message = mailSender.createMimeMessage();
@@ -119,9 +121,66 @@ public class AuthServiceImpl implements AuthService{
         helper.setTo(email);
         helper.setFrom(adminEmail);
         helper.setSubject("Verification email");
-        helper.setText(userSendVerification.getVerificationCode());
-
+        helper.setText(userVerification.getVerificationCode());
 
         mailSender.send(message);
+    }
+
+    @Override
+    public void resendVerification(String email) throws MessagingException {
+        // validate email
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND, String.format("User with email %s not found", email)
+                ));
+
+        UserVerification userVerification = userVerificationRepository.findByUser(user)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        String.format("User with email %s not found", email)
+                ));
+//        userVerification.setUser(user);
+        userVerification.setExpirationTime(LocalTime.now().plusMinutes(1));
+        userVerification.setVerificationCode(RandomUtil.random6Digits());
+
+        userVerificationRepository.save(userVerification);
+
+        // prepare email sending
+        MimeMessage message = mailSender.createMimeMessage();
+        MimeMessageHelper helper = new MimeMessageHelper(message);
+        helper.setTo(email);
+        helper.setFrom(adminEmail);
+        helper.setSubject("Verification email");
+        helper.setText(userVerification.getVerificationCode());
+
+        mailSender.send(message);
+    }
+
+    @Override
+    public void verify(VerificationRequest verificationRequest) {
+        // validate email
+        User user = userRepository.findByEmail(verificationRequest.email())
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        String.format("User with email %s not found", verificationRequest.email())
+                ));
+
+        // validate verification code
+        UserVerification userVerification = userVerificationRepository.findByUserAndAndVerificationCode(user, verificationRequest.verificationCode())
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        String.format("Verification code %s not found", verificationRequest.verificationCode())
+                ));
+
+        // validate is verification code expire
+        if(LocalTime.now().isAfter(userVerification.getExpirationTime())){
+            throw new ResponseStatusException(
+                    HttpStatus.UNAUTHORIZED,
+                    String.format("Verification code %s is expired", verificationRequest.verificationCode())
+            );
+        }
+        user.setIsVerified(true);
+        userRepository.save(user);
+
+        userVerificationRepository.delete(userVerification);
     }
 }
